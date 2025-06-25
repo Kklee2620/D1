@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrapbook Kỷ Niệm</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0, #fd79a8);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .scrapbook-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .title {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #2d3436;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .memory-section {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+        
+        .memory-section:nth-child(2) { animation-delay: 0.2s; }
+        .memory-section:nth-child(3) { animation-delay: 0.4s; }
+        .memory-section:nth-child(4) { animation-delay: 0.6s; }
+        .memory-section:nth-child(5) { animation-delay: 0.8s; }
+        .memory-section:nth-child(6) { animation-delay: 1.0s; }
+        .memory-section:nth-child(7) { animation-delay: 1.2s; }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: rotate(-2deg);
+            margin: 20px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+        
+        .polaroid img {
+            width: 250px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+        
+        .polaroid-caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 10px;
+            color: #2d3436;
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            right: 15px;
+        }
+        
+        .memory-text {
+            background: rgba(255,255,255,0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            position: relative;
+            border-left: 5px solid #fd79a8;
+        }
+        
+        .memory-text::before {
+            content: '"';
+            font-size: 4rem;
+            color: #fd79a8;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-family: serif;
+        }
+        
+        .collage {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .washi-tape {
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            background: repeating-linear-gradient(
+                45deg,
+                #ff7675,
+                #ff7675 10px,
+                #fd79a8 10px,
+                #fd79a8 20px
+            );
+            opacity: 0.7;
+            transform: rotate(-15deg);
+        }
+        
+        .heart-decoration {
+            position: absolute;
+            color: #fd79a8;
+            font-size: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .bokeh {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8), transparent);
+            border-radius: 50%;
+            animation: bokehFloat 8s linear infinite;
+            pointer-events: none;
+        }
+        
+        .light-leak {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.3), transparent);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: lightLeak 6s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes bokehFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes lightLeak {
+            0%, 100% {
+                opacity: 0.2;
+                transform: translateX(-50px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateX(50px);
+            }
+        }
+        
+        .final-message {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #2d3436;
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .polaroid img {
+                width: 200px;
+                height: 160px;
+            }
+            
+            .collage {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+          <audio id="background-music" loop autoplay preload="auto">
+          <source src="music/Don-Gian-Anh-Yeu-Em-Ho-Quoc-Viet.mp3" type="audio/mpeg">
+          Trình duyệt của bạn không hỗ trợ thẻ audio.
+     </audio>
+
+
+
+    <!-- Hiệu ứng bokeh -->
+    <div class="bokeh" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="bokeh" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="bokeh" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="bokeh" style="left: 70%; animation-delay: 6s;"></div>
+    <div class="bokeh" style="left: 90%; animation-delay: 8s;"></div>
+    
+    <!-- Hiệu ứng light leak -->
+    <div class="light-leak" style="top: 10%; right: -100px;"></div>
+    <div class="light-leak" style="bottom: 20%; left: -100px; animation-delay: 3s;"></div>
+    
+    <div class="scrapbook-container">
+        <h1 class="title">Những Kỷ Niệm Của Chúng Ta</h1>
+        
+        <!-- Kỷ niệm 1: Ngày đầu gặp nhau -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0044.JPEG" alt="Ngày đầu gặp nhau">
+                    <div class="polaroid-caption">Mùng 4 Tết - Lần đầu gặp nhau</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0329.JPEG" alt="Ôm nhau thật chặt">
+                    <div class="polaroid-caption">Cái ôm đầu tiên</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Em còn nhớ ngày đầu tiên mình gặp nhau. Sau hơn 6 tháng nhắn tin, hàng trăm cuộc gọi cãi vã đủ kiểu, cuối cùng mùng 4 Tết mình cũng đã gặp được nhau, được ôm em một cái thật chặt.
+            </div>
+            <div class="washi-tape" style="top: 20px; right: 50px;"></div>
+            <div class="heart-decoration" style="top: 10px; left: 20px;">💕</div>
+        </div>
+        
+        <!-- Kỷ niệm 2: Nắm tay ở Yên Bái -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0337.JPEG" alt="Yên Bái">
+                    <div class="polaroid-caption">Trời Tết ở Yên Bái</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0388.JPEG" alt="Nắm tay">
+                    <div class="polaroid-caption">Em nắm tay anh rất chặt</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Anh vẫn nhớ mãi cảm giác em nắm tay anh rất chặt giữa trời Tết ở Yên Bái. Nhớ cả những đêm anh thức trắng vật lộn với công việc, vẫn có em ngồi bên cạnh anh.
+            </div>
+            <div class="heart-decoration" style="bottom: 10px; right: 30px;">💖</div>
+        </div>
+        
+        <!-- Kỷ niệm 3: Những ngày bên nhau -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0408.JPEG" alt="Bên nhau">
+                    <div class="polaroid-caption">Em luôn ở bên anh</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0417.JPEG" alt="Hạnh phúc">
+                    <div class="polaroid-caption">Những ngày hạnh phúc</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0441.JPEG" alt="Yêu thương">
+                    <div class="polaroid-caption">Tình yêu chân thành</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Chúng ta đã cùng nhau vượt qua rất nhiều chuyện – hy sinh, chờ đợi, cãi vã... Cả những tháng ngày anh mệt mỏi, kiệt sức vì công việc, em vẫn ở đó, dù chỉ là nói chuyện qua điện thoại.
+            </div>
+            <div class="washi-tape" style="bottom: 30px; left: 40px; transform: rotate(25deg);"></div>
+        </div>
+        
+        <!-- Kỷ niệm 4: Thời gian khó khăn -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0486.JPEG" alt="Khó khăn">
+                    <div class="polaroid-caption">Những lúc khó khăn</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0595.JPEG" alt="Cô đơn">
+                    <div class="polaroid-caption">Khi anh cần em nhất</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Cái lúc anh gặp tai nạn, suýt mất mạng, thứ anh cần nhất không phải lời động viên gì to tát, mà chỉ là một tin nhắn hỏi thăm. Anh thực sự mất phương hướng vì em đã để anh một mình vào đúng thời điểm anh cần em nhất.
+            </div>
+            <div class="heart-decoration" style="top: 50px; left: 50px;">💔</div>
+        </div>
+        
+        <!-- Kỷ niệm 5: Tình yêu vẫn còn -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0708.JPEG" alt="Tình cảm">
+                    <div class="polaroid-caption">Tình cảm vẫn còn</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0776.JPEG" alt="Che chở">
+                    <div class="polaroid-caption">Muốn che chở em</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0795.JPEG" alt="Bù đắp">
+                    <div class="polaroid-caption">Bù đắp tổn thương</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Em biết tình cảm của anh vẫn còn. Chỉ là có những điều cả hai chúng ta đều im lặng, có lẽ vì giữa mình đã có quá nhiều kỷ niệm. Anh vẫn muốn là người tiếp tục che chở cho em, để bù đắp lại khoảng thời gian đã qua.
+            </div>
+            <div class="washi-tape" style="top: 10px; right: 20px; transform: rotate(-30deg);"></div>
+        </div>
+        
+        <!-- Kỷ niệm 6: Tình yêu chân thành -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0871.JPEG" alt="Yêu thương">
+                    <div class="polaroid-caption">Tình yêu đủ lớn</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0898.JPEG" alt="Chăm sóc">
+                    <div class="polaroid-caption">Em chăm sóc anh</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Anh biết mình phiền phức, nói nhiều, đôi khi rất khùng, và em đã phải chịu đựng, chăm sóc anh. Em nói chỉ có 1 mình anh chịu được và chiều được em. Đơn giản vì anh yêu em, tình yêu đủ lớn thì mọi thứ cũng chịu được.
+            </div>
+            <div class="heart-decoration" style="bottom: 20px; right: 40px;">💝</div>
+        </div>
+        
+        <!-- Kỷ niệm 7: Lời cuối -->
+        <div class="memory-section">
+            <div class="collage">
+                <div class="polaroid">
+                    <img src="images/IMG_0904.JPEG" alt="Kỷ niệm">
+                    <div class="polaroid-caption">Những kỷ niệm đẹp</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_0972.JPEG" alt="Tương lai">
+                    <div class="polaroid-caption">Mong em hạnh phúc</div>
+                </div>
+                <div class="polaroid">
+                    <img src="images/IMG_1133.JPEG" alt="Tạm biệt">
+                    <div class="polaroid-caption">Tạm biệt em...</div>
+                </div>
+            </div>
+            <div class="memory-text">
+                Cuối cùng, anh vẫn mong em sẽ tìm được một người thật tốt, có thể chiều chuộng và lo lắng cho em đầy đủ. Viết đến đây, lòng anh thắt lại. Xin lỗi em, anh đã không cầm được nước mắt.
+            </div>
+            <div class="heart-decoration" style="top: 30px; left: 60px;">💧</div>
+        </div>
+        
+        <div class="final-message">
+            "Dù chúng ta không thể tiếp tục bên nhau,<br>
+            những kỷ niệm đẹp sẽ mãi trong tim anh..."
+        </div>
+    </div>
+    
+    <script>
+        // Tạo hiệu ứng parallax cho các polaroid
+        document.addEventListener('mousemove', (e) => {
+            const polaroids = document.querySelectorAll('.polaroid');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            polaroids.forEach((polaroid, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                const xMove = (x - 0.5) * speed;
+                const yMove = (y - 0.5) * speed;
+                
+                polaroid.style.transform += ` translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+        
+        // Hiệu ứng xuất hiện từ từ khi scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.memory-section').forEach(section => {
+            observer.observe(section);
+        });
+
+         // Tự động phát nhạc nền
+         const music = document.getElementById('background-music');
+         // Cố gắng phát nhạc. Trình duyệt có thể chặn việc này cho đến khi người dùng tương tác lần đầu.
+         let playPromise = music.play();
+
+         if (playPromise !== undefined) {
+           playPromise.catch(error => {
+             console.log("Việc tự động phát nhạc đã bị trình duyệt chặn. Nhạc sẽ bắt đầu khi người dùng tương tác với trang.");
+             // Thêm một trình xử lý sự kiện để thử phát lại khi người dùng nhấp vào bất cứ đâu
+             document.body.addEventListener('click', () => music.play(), { once: true });
+           });
+         }
+      </script>
+</body>
+</html>
